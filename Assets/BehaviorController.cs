@@ -15,13 +15,9 @@ public class BehaviorController : MonoBehaviour
     Direction _direction { get { return _movementController.Direction; } }
     float _spriteCellDimension = 0.64f;
 
-    // cantidad de unidades de crecimiento de la serpiente
-    int _growth;
-
     // Use this for initialization
     void Start()
     {
-        _growth = 0;
         _bodyGroup = GameObject.Find("Cuerpos");
         _tail = GameObject.Find("Cola");
         _movementController = GetComponent<MovementController>();
@@ -65,8 +61,7 @@ public class BehaviorController : MonoBehaviour
         // Cambio de posicion de la cola
         _tail.transform.position += (Vector3)newPosition;
 
-        // se agrega una unidad de crecimiento al parametro
-        _growth++;
+        // TODO: quisas alterar una variable de puntaje o interna al agregar un espacio
     }
 
 }

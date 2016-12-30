@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{350F2AC5-71FF-240D-8888-761BE0EB5E1B}</ProjectGuid>
+    <ProjectGuid>{C194EBF3-7E80-BB9A-F8CC-BD28ADE0BDD9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -47,15 +47,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\BehaviorController.cs" />
+     <Compile Include="Assets\BodyController.cs" />
      <Compile Include="Assets\ControllingCameraAspectScript.cs" />
      <Compile Include="Assets\MovementControl.cs" />
      <Compile Include="Assets\MovementController.cs" />
      <Compile Include="Assets\TouchKitLite\TKLSwipeDetector.cs" />
      <Compile Include="Assets\TouchKitLite\TKLTouch.cs" />
      <Compile Include="Assets\TouchKitLite\TouchKitLite.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -70,9 +68,6 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
