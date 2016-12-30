@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{B6F2207A-2698-5244-BC45-2B349EEE6FC5}") = "prueba_android_2d", "Assembly-CSharp.csproj", "{350F2AC5-71FF-240D-8888-761BE0EB5E1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{350F2AC5-71FF-240D-8888-761BE0EB5E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{350F2AC5-71FF-240D-8888-761BE0EB5E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{350F2AC5-71FF-240D-8888-761BE0EB5E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{350F2AC5-71FF-240D-8888-761BE0EB5E1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
