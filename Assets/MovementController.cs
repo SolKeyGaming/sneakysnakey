@@ -2,29 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum Direction
-{
-    Up,
-    Right,
-    Down,
-    Left
-}
+using UnityEngine.EventSystems;
 
 public class MovementController : MonoBehaviour
 {
     public float Step;
     public float SecondsPerMove;
+    public List<Vector2> WayPoints;
 
     // para manejar cambios de direccion
-    public Direction Direction;
-    public Direction PreviousDirection;
+    public MoveDirection Direction;
+    public MoveDirection PreviousDirection;
 
     // Elementos
     GameObject _cabeza;
     GameObject _cuerpos;
     GameObject _cola;
-    List<Vector2> _wayPoints;
     Vector2 _posicionAntCabeza;
 
     string input;
@@ -39,18 +32,18 @@ public class MovementController : MonoBehaviour
         //Posicionar cola segun el primer cuerpo (el mas alejado de la cabeza)
         _cola.transform.position = ListarCuerpos()[0].position - new Vector3(0,-0.64f,0);
 
-        Direction = Direction.Up;
+        Direction = MoveDirection.Up;
 
         // Inicializacion de los waypoints
-        _wayPoints = new List<Vector2>() { _cabeza.transform.position };
+        WayPoints = new List<Vector2>() { _cabeza.transform.position };
 
         foreach (Transform t in ListarCuerpos())
         {
-            _wayPoints.Add(t.position);
+            WayPoints.Add(t.position);
         }
 
-        _wayPoints.Add(_cola.transform.position);
-        _wayPoints.Reverse();
+        WayPoints.Add(_cola.transform.position);
+        WayPoints.Reverse();
 
         // Invocacion del Metodo 'Move' cada 'SecondsPerMove' segundos
         InvokeRepeating("Move", 0, SecondsPerMove);
@@ -71,17 +64,17 @@ public class MovementController : MonoBehaviour
         //TODO: cambiar input a swipes
         PreviousDirection = Direction;
 
-        if (input == "w" && Direction != Direction.Down)
-            Direction = Direction.Up;
+        if (input == "w" && Direction != MoveDirection.Down)
+            Direction = MoveDirection.Up;
 
-        if (input == "d" && Direction != Direction.Left)
-            Direction = Direction.Right;
+        if (input == "d" && Direction != MoveDirection.Left)
+            Direction = MoveDirection.Right;
 
-        if (input == "s" && Direction != Direction.Up)
-            Direction = Direction.Down;
+        if (input == "s" && Direction != MoveDirection.Up)
+            Direction = MoveDirection.Down;
 
-        if (input == "a" && Direction != Direction.Right)
-            Direction = Direction.Left;
+        if (input == "a" && Direction != MoveDirection.Right)
+            Direction = MoveDirection.Left;
 
         if (PreviousDirection != Direction)
             RotateByDirection(_cabeza.transform);
@@ -97,16 +90,16 @@ public class MovementController : MonoBehaviour
 
         switch (Direction)
         {
-            case (Direction.Up):
+            case (MoveDirection.Up):
                 headDirection = new Vector2(0, Step);
                 break;
-            case (Direction.Left):
+            case (MoveDirection.Left):
                 headDirection = new Vector2(-Step, 0);
                 break;
-            case (Direction.Down):
+            case (MoveDirection.Down):
                 headDirection = new Vector2(0, -Step);
                 break;
-            case (Direction.Right):
+            case (MoveDirection.Right):
                 headDirection = new Vector2(Step, 0);
                 break;
             default:
@@ -117,7 +110,7 @@ public class MovementController : MonoBehaviour
         // Mover la cabeza
         MoverObjeto(_cabeza, headDirection);
 
-        int wpIndex = _wayPoints.Count - 1;
+        int wpIndex = WayPoints.Count - 1;
         List<Transform> listaDeCuerpos = ListarCuerpos();
 
         // Mover cada cuerpo en _cuerpos
@@ -125,31 +118,34 @@ public class MovementController : MonoBehaviour
         {
             // Obtener datos para calculo de direccion
             Vector2 posicionCuerpo = listaDeCuerpos[i].position;
-            Vector2 posicionWayPoint = _wayPoints[wpIndex];
+            Vector2 posicionWayPoint = WayPoints[wpIndex];
             
             // Obtener el vector direccion
             Vector2 vectorDireccion = new Vector2(posicionWayPoint.x - posicionCuerpo.x, posicionWayPoint.y - posicionCuerpo.y);
 
             // Mover cuerpo
-            MoverObjeto(listaDeCuerpos[i].gameObject, vectorDireccion);
+            BodyController bodyControl = (BodyController) listaDeCuerpos[i].gameObject.GetComponent(typeof(BodyController));
+            bodyControl.Move(vectorDireccion);
             wpIndex--;
 
         }
 
         // Mover cola
         Vector2 posicionCola = _cola.transform.position;
-        Vector2 posicionWayPointCola = _wayPoints[1];       // el waypoint de la cola siempre sera 0, por lo que le sigue el 1
+        Vector2 posicionWayPointCola = WayPoints[1];       // el waypoint de la cola siempre sera 0, por lo que le sigue el 1
 
         Vector2 vDireccionCola = new Vector2(posicionWayPointCola.x - posicionCola.x, posicionWayPointCola.y - posicionCola.y);
         //vDireccionCola *= step;
-        MoverObjeto(_cola, vDireccionCola);
+        //MoverObjeto(_cola, vDireccionCola);
+        BodyController bodyControlCola = (BodyController)_cola.gameObject.GetComponent(typeof(BodyController));
+        bodyControlCola.Move(vDireccionCola);
         //_cola.transform.position += (Vector3)vDireccionCola;
 
         // Agregar la nueva posicion de la cabeza a los waypoints
-        _wayPoints.Add(_cabeza.transform.position);
+        WayPoints.Add(_cabeza.transform.position);
 
         //eliminar primer waypoint
-        _wayPoints.RemoveAt(0);
+        WayPoints.RemoveAt(0);
     }
 
     void MoverObjeto(GameObject go, Vector2 direccion)
@@ -188,22 +184,22 @@ public class MovementController : MonoBehaviour
     }
 
     //helper
-    public int GetAngleByDirection(Direction d)
+    public int GetAngleByDirection(MoveDirection d)
     {
         int angle;
         //TODO: esto se repite en BehabiourController, limpiar
         switch (Direction)
         {
-            case (Direction.Up):
+            case (MoveDirection.Up):
                 angle = 0;
                 break;
-            case (Direction.Right):
-                angle = -90;
+            case (MoveDirection.Right):
+                angle = 270;
                 break;
-            case (Direction.Down):
+            case (MoveDirection.Down):
                 angle = 180;
                 break;
-            case (Direction.Left):
+            case (MoveDirection.Left):
                 angle = 90;
                 break;
             default:
@@ -212,11 +208,36 @@ public class MovementController : MonoBehaviour
         return angle;
     }
 
+    public MoveDirection GetDirectionByAngle(int angle)
+    {
+        MoveDirection direction;
+        //TODO: esto se repite en BehabiourController, limpiar
+        switch (angle)
+        {
+            case (0):
+                direction = MoveDirection.Up;
+                break;
+            case (270):
+                direction = MoveDirection.Right;
+                break;
+            case (180):
+                direction = MoveDirection.Down;
+                break;
+            case (90):
+                direction = MoveDirection.Left;
+                break;
+            default:
+                throw new Exception("MovementController.RotateByDirection(): Bad direction value = "+ angle);
+        }
+        return direction;
+    }
+
+
     //helper
     void PrintWayPoints()
     {
         string s = "";
-        foreach (Vector2 v in _wayPoints)
+        foreach (Vector2 v in WayPoints)
         {
             s += v.ToString() + " ";
         }
@@ -225,7 +246,7 @@ public class MovementController : MonoBehaviour
 
     public void AddWaypoint(Vector2 pos)
     {
-        _wayPoints.Add(pos);
+        WayPoints.Add(pos);
     }
 }
 
