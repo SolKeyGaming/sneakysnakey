@@ -46,11 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BehaviorController.cs" />
-     <Compile Include="Assets\BodyController.cs" />
-     <Compile Include="Assets\ControllingCameraAspectScript.cs" />
-     <Compile Include="Assets\MovementControl.cs" />
-     <Compile Include="Assets\MovementController.cs" />
+     <Compile Include="Assets\BodySpriteHolder.cs" />
+     <Compile Include="Assets\Scripts\BehaviorController.cs" />
+     <Compile Include="Assets\Scripts\BodyController.cs" />
+     <Compile Include="Assets\Scripts\ControllingCameraAspectScript.cs" />
+     <Compile Include="Assets\Scripts\MovementController.cs" />
+     <Compile Include="Assets\TailController.cs" />
      <Compile Include="Assets\TouchKitLite\TKLSwipeDetector.cs" />
      <Compile Include="Assets\TouchKitLite\TKLTouch.cs" />
      <Compile Include="Assets\TouchKitLite\TouchKitLite.cs" />

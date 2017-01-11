@@ -9,7 +9,6 @@ public class BehaviorController : MonoBehaviour
 
     public GameObject BodyPrefab;
 
-
     GameObject _bodyGroup;
     GameObject _tail;
     MovementController _movementController;
@@ -64,7 +63,6 @@ public class BehaviorController : MonoBehaviour
         _tail.transform.position += (Vector3)newPosition;
 
         // Creacion del nuevo waypoint en la nueva posicion de la cola
-        //_movementController.AddWaypoint(newPosition);
         _movementController.WayPoints.Insert(0, newPosition);
 
         // TODO: quisas alterar una variable de puntaje o interna al agregar un espacio

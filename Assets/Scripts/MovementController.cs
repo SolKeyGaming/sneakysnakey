@@ -22,6 +22,9 @@ public class MovementController : MonoBehaviour
 
     string input;
 
+    // Para visualizacion de waypoints
+    public GameObject WaypointPrefab;
+
     // Use this for initialization
     void Start()
     {
@@ -30,7 +33,7 @@ public class MovementController : MonoBehaviour
         _cola = GameObject.Find("Cola");
 
         //Posicionar cola segun el primer cuerpo (el mas alejado de la cabeza)
-        _cola.transform.position = ListarCuerpos()[0].position - new Vector3(0,-0.64f,0);
+        //_cola.transform.position = ListarCuerpos()[0].position - new Vector3(0,-0.64f,0);
 
         Direction = MoveDirection.Up;
 
@@ -45,6 +48,12 @@ public class MovementController : MonoBehaviour
         WayPoints.Add(_cola.transform.position);
         WayPoints.Reverse();
 
+        // mostrar waypoints
+        foreach(Vector2 v in WayPoints)
+        {
+            Instantiate(WaypointPrefab, v, Quaternion.identity);
+        }
+
         // Invocacion del Metodo 'Move' cada 'SecondsPerMove' segundos
         InvokeRepeating("Move", 0, SecondsPerMove);
 
@@ -58,6 +67,9 @@ public class MovementController : MonoBehaviour
             input = Input.inputString;
     }
 
+    /// <summary>
+    /// Cambia la direccion de la serpiente segun el input entregado (WASD)
+    /// </summary>
     void HandleInput()
     {
         // Manejar cambio de Direccion
@@ -110,7 +122,13 @@ public class MovementController : MonoBehaviour
         // Mover la cabeza
         MoverObjeto(_cabeza, headDirection);
 
-        int wpIndex = WayPoints.Count - 1;
+        // Agregar la nueva posicion de la cabeza a los waypoints
+        WayPoints.Add(_cabeza.transform.position);
+
+        // mostrar nuevo waypoint
+        Instantiate(WaypointPrefab, _cabeza.transform.position, Quaternion.identity);
+
+        int wpIndex = WayPoints.Count - 2; // -1 por el indice empezando de 0 y -2 porque el primero es el nuevo
         List<Transform> listaDeCuerpos = ListarCuerpos();
 
         // Mover cada cuerpo en _cuerpos
@@ -119,15 +137,18 @@ public class MovementController : MonoBehaviour
             // Obtener datos para calculo de direccion
             Vector2 posicionCuerpo = listaDeCuerpos[i].position;
             Vector2 posicionWayPoint = WayPoints[wpIndex];
-            
             // Obtener el vector direccion
             Vector2 vectorDireccion = new Vector2(posicionWayPoint.x - posicionCuerpo.x, posicionWayPoint.y - posicionCuerpo.y);
-
+            //
             // Mover cuerpo
+            // Obtener script BodyController del cuerpo
             BodyController bodyControl = (BodyController) listaDeCuerpos[i].gameObject.GetComponent(typeof(BodyController));
+            // Almacenar proximo waypoint para la rotacion del cuerpo
+            bodyControl.NextWayPoint = WayPoints[wpIndex + 1];
+            // Mover cuerpo
             bodyControl.Move(vectorDireccion);
-            wpIndex--;
 
+            wpIndex--;
         }
 
         // Mover cola
@@ -135,22 +156,17 @@ public class MovementController : MonoBehaviour
         Vector2 posicionWayPointCola = WayPoints[1];       // el waypoint de la cola siempre sera 0, por lo que le sigue el 1
 
         Vector2 vDireccionCola = new Vector2(posicionWayPointCola.x - posicionCola.x, posicionWayPointCola.y - posicionCola.y);
-        //vDireccionCola *= step;
-        //MoverObjeto(_cola, vDireccionCola);
-        BodyController bodyControlCola = (BodyController)_cola.gameObject.GetComponent(typeof(BodyController));
-        bodyControlCola.Move(vDireccionCola);
-        //_cola.transform.position += (Vector3)vDireccionCola;
+        TailController tailControl = (TailController)_cola.gameObject.GetComponent(typeof(TailController));
+        tailControl.NextWayPoint = WayPoints[2];
+        tailControl.Move(vDireccionCola);
 
-        // Agregar la nueva posicion de la cabeza a los waypoints
-        WayPoints.Add(_cabeza.transform.position);
-
-        //eliminar primer waypoint
+        // Eliminar waypoint en el que estaba la cola
         WayPoints.RemoveAt(0);
     }
 
     void MoverObjeto(GameObject go, Vector2 direccion)
     {
-        go.transform.position += (Vector3)direccion;
+        go.transform.position += (Vector3)direccion;// *Time.deltaTime;
     }
 
 
@@ -242,11 +258,6 @@ public class MovementController : MonoBehaviour
             s += v.ToString() + " ";
         }
         Debug.Log(s);
-    }
-
-    public void AddWaypoint(Vector2 pos)
-    {
-        WayPoints.Add(pos);
     }
 }
 

@@ -4,15 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BodyController : MonoBehaviour
+public class TailController : MonoBehaviour
 {
 
     Vector2 position { get { return transform.position; } }
     Vector2 previousPosition;
     MoveDirection direction;
+    MoveDirection previousDirection;
+    SpriteRenderer sprites;
 
     // Visualizacion de la direccion
     public string Direction;
+
+    // Entregado por el MovementController del GameObject 'Serpiente'
+    public Vector2 NextWayPoint;
 
     public void Move(Vector2 direccion)
     {
@@ -27,6 +32,7 @@ public class BodyController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        sprites = GetComponent<SpriteRenderer>();
         previousPosition = position;
         Direction = "";
     }
@@ -39,32 +45,35 @@ public class BodyController : MonoBehaviour
     void UpdateDirection()
     {
         // Almacenar direccion anterior
-        MoveDirection previousDirection = direction;
+        previousDirection = direction;
 
-        // Calcular nueva direccion
-        if (previousPosition.x > position.x)
+        // Calcular proxima direccion
+        if (position.x > NextWayPoint.x)
+        {
             direction = MoveDirection.Left;
-
-        else if (previousPosition.x < position.x)
+        }
+        else if (position.x < NextWayPoint.x)
             direction = MoveDirection.Right;
 
-        else if (previousPosition.y > position.y)
+        else if (position.y > NextWayPoint.y)
             direction = MoveDirection.Down;
 
-        else if (previousPosition.y < position.y)
+        else if (position.y < NextWayPoint.y)
             direction = MoveDirection.Up;
 
         // Rotar objeto si ha cambiado de direccion
         if (previousDirection != direction)
-            RotateByDirection();
+        {
+            RotateByDirection(direction);
+        }
 
         Direction = direction.ToString();
     }
 
-    void RotateByDirection()
+    void RotateByDirection(MoveDirection d)
     {
         Quaternion q = new Quaternion();
-        int rotation = GetAngleByDirection(direction);
+        int rotation = GetAngleByDirection(d);
         q.eulerAngles = new Vector3(0, 0, rotation);
         transform.rotation = q;
     }
@@ -92,6 +101,4 @@ public class BodyController : MonoBehaviour
         }
         return angle;
     }
-
-
 }
