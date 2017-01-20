@@ -12,6 +12,8 @@ public class BodyController : MonoBehaviour
     MoveDirection direction;
     MoveDirection previousDirection;
     SpriteRenderer sprites;
+    Sprite StraightBodySprite;
+    Sprite CornerBodySprite;
 
     // Visualizacion de la direccion
     public string Direction;
@@ -19,10 +21,7 @@ public class BodyController : MonoBehaviour
 
     // Entregado por el MovementController del GameObject 'Serpiente'
     public Vector2 NextWayPoint;
-
-    // Sprites TODO: externalizar
-    public Sprite StraightBodySprite;
-    public Sprite CornerBodySprite;
+    
 
     public void Move(Vector2 direccion)
     {
@@ -40,6 +39,8 @@ public class BodyController : MonoBehaviour
         sprites = GetComponent<SpriteRenderer>();
         previousPosition = position;
         Direction = "";
+        StraightBodySprite = gameObject.GetComponentInParent<BodySpriteHolder>().StraightBodySprite;
+        CornerBodySprite = gameObject.GetComponentInParent<BodySpriteHolder>().CornerBodySprite;
     }
 
     // Update is called once per frame

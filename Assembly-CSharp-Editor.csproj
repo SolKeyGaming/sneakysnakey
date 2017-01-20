@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B997443C-57CB-46C3-4897-5E180345BC09}</ProjectGuid>
+    <ProjectGuid>{FEFA4EE5-0F73-2126-3ECF-0BF276C7EEFA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -46,9 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\TouchKit\Assets\Editor\TouchKitMenuItem.cs" />
-     <Compile Include="Assets\TouchKit\Assets\TouchKit\Editor\TouchKitEditor.cs" />
-     <None Include="Assets\TouchKit\ProjectSettings\ProjectVersion.txt" />
+     <Compile Include="Assets\Editor\TouchKitMenuItem.cs" />
+     <Compile Include="Assets\TouchKit\Editor\TouchKitEditor.cs" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -115,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{350F2AC5-71FF-240D-8888-761BE0EB5E1B}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+      <Project>{C194EBF3-7E80-BB9A-F8CC-BD28ADE0BDD9}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

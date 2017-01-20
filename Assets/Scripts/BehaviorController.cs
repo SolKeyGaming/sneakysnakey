@@ -30,7 +30,7 @@ public class BehaviorController : MonoBehaviour
             AddBody();
     }
 
-    void AddBody()
+    public void AddBody()
     {
         // posicion y rotacion de la cola
         Vector2 position = _tail.transform.position;

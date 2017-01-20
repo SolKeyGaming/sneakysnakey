@@ -6,9 +6,13 @@ using UnityEngine.EventSystems;
 
 public class MovementController : MonoBehaviour
 {
+    /// <summary>
+    /// asd
+    /// </summary>
     public float Step;
     public float SecondsPerMove;
     public List<Vector2> WayPoints;
+    public Rect PlayArea { get { return new Rect(-3, -5, 6, 10); } }
 
     // para manejar cambios de direccion
     public MoveDirection Direction;
@@ -23,7 +27,7 @@ public class MovementController : MonoBehaviour
     string input;
 
     // Para visualizacion de waypoints
-    public GameObject WaypointPrefab;
+    //public GameObject WaypointPrefab;
 
     // Use this for initialization
     void Start()
@@ -48,11 +52,11 @@ public class MovementController : MonoBehaviour
         WayPoints.Add(_cola.transform.position);
         WayPoints.Reverse();
 
-        // mostrar waypoints
-        foreach(Vector2 v in WayPoints)
-        {
-            Instantiate(WaypointPrefab, v, Quaternion.identity);
-        }
+        // mostrar waypoints como un cuadrado blanco
+        //foreach(Vector2 v in WayPoints)
+        //{
+        //    Instantiate(WaypointPrefab, v, Quaternion.identity);
+        //}
 
         // Invocacion del Metodo 'Move' cada 'SecondsPerMove' segundos
         InvokeRepeating("Move", 0, SecondsPerMove);
@@ -63,7 +67,7 @@ public class MovementController : MonoBehaviour
     void Update()
     {
         // Si hubo input, se almacena hasta ser consumido
-        if(Input.anyKeyDown)
+        if (Input.anyKeyDown)
             input = Input.inputString;
     }
 
@@ -88,46 +92,68 @@ public class MovementController : MonoBehaviour
         if (input == "a" && Direction != MoveDirection.Right)
             Direction = MoveDirection.Left;
 
-        if (PreviousDirection != Direction)
-            RotateByDirection(_cabeza.transform);
+        if(input == "f")
+        {
+            RotateByDirection(transform, MoveDirection.Up);
+        }
 
         input = "";
     }
 
+
+    /// <summary>
+    /// Checks if a gameobject can be moved outside of the Rect 'playArea'
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <param name="direction"></param>
+    /// <param name="magnitude"></param>
+    /// <returns></returns>
+    bool CanMove(Transform transform, MoveDirection direction, float magnitude)
+    {
+        Vector2 v_direction = DirectionVector(magnitude, direction);
+        Vector2 position = (Vector2)transform.position + v_direction;
+        if (position.x > PlayArea.xMax || position.x < PlayArea.xMin
+            || position.y > PlayArea.yMax || position.y < PlayArea.yMin)
+        {
+            return false;
+        }
+        return true;
+    }
+
     void Move()
     {
+        // Manejar input para cambiar la direccion de la serpiente
+        // TODO: limpiar y reestructurar la logica de los inputs
         HandleInput();
 
-        Vector2 headDirection;
-
-        switch (Direction)
+        // Si el objeto no se puede mover, se intenta con su direccion anterior
+        if(!CanMove(_cabeza.transform, Direction, Step))
         {
-            case (MoveDirection.Up):
-                headDirection = new Vector2(0, Step);
-                break;
-            case (MoveDirection.Left):
-                headDirection = new Vector2(-Step, 0);
-                break;
-            case (MoveDirection.Down):
-                headDirection = new Vector2(0, -Step);
-                break;
-            case (MoveDirection.Right):
-                headDirection = new Vector2(Step, 0);
-                break;
-            default:
-                headDirection = new Vector2();
-                break;
+            // Reestablecer direccion
+            Direction = PreviousDirection;
+            // Si no se puede mover en la direccion anterior, no se mueve
+            if (!CanMove(_cabeza.transform, Direction, Step))
+            {
+                return;
+            }
         }
+        // Calculo del vector movimiento de la cabeza
+        Vector2 headMovement = DirectionVector(Step, Direction);
+
+        // Calculo de la nueva posicion de la cabeza
+        Vector2 newHeadPosition = (Vector2)_cabeza.transform.position + headMovement;
+
+        // Rotar cabeza
+        if (PreviousDirection != Direction)
+            RotateByDirection(_cabeza.transform);
 
         // Mover la cabeza
-        MoverObjeto(_cabeza, headDirection);
+        MoverObjeto(_cabeza, headMovement);
 
         // Agregar la nueva posicion de la cabeza a los waypoints
         WayPoints.Add(_cabeza.transform.position);
 
-        // mostrar nuevo waypoint
-        Instantiate(WaypointPrefab, _cabeza.transform.position, Quaternion.identity);
-
+        // Preparar datos para mover los cuerpos
         int wpIndex = WayPoints.Count - 2; // -1 por el indice empezando de 0 y -2 porque el primero es el nuevo
         List<Transform> listaDeCuerpos = ListarCuerpos();
 
@@ -137,20 +163,23 @@ public class MovementController : MonoBehaviour
             // Obtener datos para calculo de direccion
             Vector2 posicionCuerpo = listaDeCuerpos[i].position;
             Vector2 posicionWayPoint = WayPoints[wpIndex];
+
             // Obtener el vector direccion
             Vector2 vectorDireccion = new Vector2(posicionWayPoint.x - posicionCuerpo.x, posicionWayPoint.y - posicionCuerpo.y);
-            //
-            // Mover cuerpo
+
             // Obtener script BodyController del cuerpo
-            BodyController bodyControl = (BodyController) listaDeCuerpos[i].gameObject.GetComponent(typeof(BodyController));
+            BodyController bodyControl = (BodyController)listaDeCuerpos[i].gameObject.GetComponent(typeof(BodyController));
+
             // Almacenar proximo waypoint para la rotacion del cuerpo
             bodyControl.NextWayPoint = WayPoints[wpIndex + 1];
+
             // Mover cuerpo
             bodyControl.Move(vectorDireccion);
 
+            // Decrecer el contador de waypoints
             wpIndex--;
         }
-
+        
         // Mover cola
         Vector2 posicionCola = _cola.transform.position;
         Vector2 posicionWayPointCola = WayPoints[1];       // el waypoint de la cola siempre sera 0, por lo que le sigue el 1
@@ -163,22 +192,77 @@ public class MovementController : MonoBehaviour
         // Eliminar waypoint en el que estaba la cola
         WayPoints.RemoveAt(0);
     }
-
     void MoverObjeto(GameObject go, Vector2 direccion)
     {
-        go.transform.position += (Vector3)direccion;// *Time.deltaTime;
+        Vector3 posicion = go.transform.position + (Vector3)direccion;
+        go.transform.position = posicion;
     }
 
-
-    void MoverCuerpo()
+    public void SwipeDetected(TKSwipeRecognizer recognizer)
     {
+        switch (recognizer.completedSwipeDirection)
+        {
+            // TODO: cambiar manera en que se almacenan los inputs, quisas una enumeracion de tipos de inputs? 
+            case (TKSwipeDirection.Up):
+                input = "w";
+                break;
+            case (TKSwipeDirection.Right):
+                input = "d";
+                break;
+            case (TKSwipeDirection.Down):
+                input = "s";
+                break;
+            case (TKSwipeDirection.Left):
+                input = "a";
+                break;
+        }
     }
 
+    /// <summary>
+    /// Entrega un vector que representa la magnitud y direccion
+    /// del desplazamiento de un cuerpo
+    /// </summary>
+    /// <param name="magnitude">la magnitud del desplazamiento</param>
+    /// <param name="direction">la direccion del desplazamiento</param>
+    /// <returns>vector director del movimiento</returns>
+    Vector2 DirectionVector(float magnitude, MoveDirection direction)
+    {
+        Vector2 resultingVector;
+
+        switch (direction)
+        {
+            case (MoveDirection.Up):
+                resultingVector = new Vector2(0, Step);
+                break;
+            case (MoveDirection.Left):
+                resultingVector = new Vector2(-Step, 0);
+                break;
+            case (MoveDirection.Down):
+                resultingVector = new Vector2(0, -Step);
+                break;
+            case (MoveDirection.Right):
+                resultingVector = new Vector2(Step, 0);
+                break;
+            default:
+                throw new Exception("Bad direction value");
+        }
+
+        return resultingVector;
+
+    }
 
     void RotateByDirection(Transform t)
     {
         Quaternion q = new Quaternion();
         int rotation = GetAngleByDirection(Direction);
+
+        q.eulerAngles = new Vector3(0, 0, rotation);
+        t.rotation = q;
+    }
+    void RotateByDirection(Transform t, MoveDirection d)
+    {
+        Quaternion q = new Quaternion();
+        int rotation = GetAngleByDirection(d);
 
         q.eulerAngles = new Vector3(0, 0, rotation);
         t.rotation = q;
@@ -243,7 +327,7 @@ public class MovementController : MonoBehaviour
                 direction = MoveDirection.Left;
                 break;
             default:
-                throw new Exception("MovementController.RotateByDirection(): Bad direction value = "+ angle);
+                throw new Exception("MovementController.RotateByDirection(): Bad direction value = " + angle);
         }
         return direction;
     }
@@ -257,7 +341,6 @@ public class MovementController : MonoBehaviour
         {
             s += v.ToString() + " ";
         }
-        Debug.Log(s);
     }
 }
 
