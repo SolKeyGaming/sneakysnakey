@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI : MonoBehaviour {
+public class InputController : MonoBehaviour {
 
     MovementController movementControl;
     BehaviorController behaviorControl;

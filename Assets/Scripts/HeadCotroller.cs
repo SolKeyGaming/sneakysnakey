@@ -24,19 +24,22 @@ public class HeadCotroller : MonoBehaviour
     {
         if (collision.gameObject.tag == "Edible")
         {
-            Debug.Log(_playArea);
             Vector2 randomPos = new Vector2(Random.Range(_playArea.xMin + 0.5f, _playArea.xMax - 0.5f),
                 Random.Range(_playArea.yMin + 0.5f, _playArea.yMax - 0.5f));
             var go = Instantiate(collision.gameObject, randomPos, Quaternion.identity);
 
             Destroy(collision.gameObject);
             _behaviour.AddBody();
+
+            // TODO: buscar una solucion al problema de usar .Find()
+            UiController ui = GameObject.Find("ScreenManager").GetComponent<UiController>();
+            ui.AddToScore(1);
+
         }
 
-        if (collision.gameObject.name == "Cuerpo" || collision.gameObject.name == "Cola")
+        if (collision.gameObject.name.StartsWith("Cuerpo") || collision.gameObject.name == "Cola")
         {
-            // FIX ME: collision se detecta cuando no deberia u.u
-            //Destroy(collision.gameObject);
+            GameObject.Find("ScreenManager").GetComponent<UiController>().GameOver();
         }
 
     }

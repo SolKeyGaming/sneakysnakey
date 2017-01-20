@@ -36,8 +36,21 @@ public class BehaviorController : MonoBehaviour
         Vector2 position = _tail.transform.position;
         Quaternion rotation = _tail.transform.rotation;
 
+        TailController tailController = _tail.GetComponent<TailController>();
+
+        // TODO: el nuevo cuerpo viene con las direcciones correctas, pro no actualiza su rotacion acorde, sino en el prox MovementController.Move()
+
         // Instanciado del Cuerpo prefabricado donde esta la cola
-        Instantiate(BodyPrefab, position, rotation, _bodyGroup.transform);
+        var body = Instantiate(BodyPrefab, position, Quaternion.identity, _bodyGroup.transform);
+
+        BodyController bodyControl = body.GetComponent<BodyController>();
+
+        // Direccion del nuevo cuerpo
+        bodyControl.PreviousDirection = tailController.Direction;
+        bodyControl.Direction = (_bodyGroup.transform.GetChild(
+            _bodyGroup.transform.childCount - 1).GetComponent<BodyController>()).PreviousDirection;
+
+        //bodyControl.HandleDirection();
 
         // Calculo de la nueva posicion de la cola
         MoveDirection tailDirection = _movementController.GetDirectionByAngle((int)rotation.eulerAngles.z);

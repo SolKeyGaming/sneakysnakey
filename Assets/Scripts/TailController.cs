@@ -9,14 +9,12 @@ public class TailController : MonoBehaviour
 
     Vector2 position { get { return transform.position; } }
     Vector2 previousPosition;
-    MoveDirection direction;
-    MoveDirection previousDirection;
-
-    // Visualizacion de la direccion
-    public string Direction;
 
     // Entregado por el MovementController del GameObject 'Serpiente'
     public Vector2 NextWayPoint;
+    
+    public MoveDirection Direction;
+    public MoveDirection PreviousDirection;
 
     public void Move(Vector2 direccion)
     {
@@ -32,7 +30,6 @@ public class TailController : MonoBehaviour
     void Start()
     {
         previousPosition = position;
-        Direction = "";
     }
 
     // Update is called once per frame
@@ -43,29 +40,27 @@ public class TailController : MonoBehaviour
     void UpdateDirection()
     {
         // Almacenar direccion anterior
-        previousDirection = direction;
+        PreviousDirection = Direction;
 
         // Calcular proxima direccion
         if (position.x > NextWayPoint.x)
         {
-            direction = MoveDirection.Left;
+            Direction = MoveDirection.Left;
         }
         else if (position.x < NextWayPoint.x)
-            direction = MoveDirection.Right;
+            Direction = MoveDirection.Right;
 
         else if (position.y > NextWayPoint.y)
-            direction = MoveDirection.Down;
+            Direction = MoveDirection.Down;
 
         else if (position.y < NextWayPoint.y)
-            direction = MoveDirection.Up;
+            Direction = MoveDirection.Up;
 
         // Rotar objeto si ha cambiado de direccion
-        if (previousDirection != direction)
+        if (PreviousDirection != Direction)
         {
-            RotateByDirection(direction);
+            RotateByDirection(Direction);
         }
-
-        Direction = direction.ToString();
     }
 
     void RotateByDirection(MoveDirection d)

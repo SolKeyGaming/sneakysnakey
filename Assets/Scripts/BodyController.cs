@@ -9,15 +9,12 @@ public class BodyController : MonoBehaviour
 
     Vector2 position { get { return transform.position; } }
     Vector2 previousPosition;
-    MoveDirection direction;
-    MoveDirection previousDirection;
     SpriteRenderer sprites;
     Sprite StraightBodySprite;
     Sprite CornerBodySprite;
-
-    // Visualizacion de la direccion
-    public string Direction;
-    public string PreviousDirection { get { return previousDirection.ToString(); } }
+    
+    public MoveDirection Direction;
+    public MoveDirection PreviousDirection;
 
     // Entregado por el MovementController del GameObject 'Serpiente'
     public Vector2 NextWayPoint;
@@ -38,7 +35,6 @@ public class BodyController : MonoBehaviour
     {
         sprites = GetComponent<SpriteRenderer>();
         previousPosition = position;
-        Direction = "";
         StraightBodySprite = gameObject.GetComponentInParent<BodySpriteHolder>().StraightBodySprite;
         CornerBodySprite = gameObject.GetComponentInParent<BodySpriteHolder>().CornerBodySprite;
     }
@@ -51,33 +47,23 @@ public class BodyController : MonoBehaviour
     void UpdateDirection()
     {
         // Almacenar direccion anterior
-        previousDirection = direction;
+        PreviousDirection = Direction;
 
         // Calcular proxima direccion
         if (position.x > NextWayPoint.x)
-            direction = MoveDirection.Left;
+            Direction = MoveDirection.Left;
 
         else if (position.x < NextWayPoint.x)
-            direction = MoveDirection.Right;
+            Direction = MoveDirection.Right;
 
         else if (position.y > NextWayPoint.y)
-            direction = MoveDirection.Down;
+            Direction = MoveDirection.Down;
 
         else if (position.y < NextWayPoint.y)
-            direction = MoveDirection.Up;
+            Direction = MoveDirection.Up;
 
         // Rotar objeto si ha cambiado de direccion
-        if (previousDirection != direction)
-        {
-            ChangeToCornerSprite();
-        }
-        else
-        {
-            RotateByDirection(direction);
-            ChangeToStraightSprite();
-        }
-
-        Direction = direction.ToString();
+        HandleDirection();
     }
 
     void RotateByDirection(MoveDirection d)
@@ -120,29 +106,29 @@ public class BodyController : MonoBehaviour
         transform.rotation = new Quaternion(0, 0, 0, 0);
 
         // Si va hacia arriba y a la izquierda, o hacia la derecha y abajo
-        if ((previousDirection == MoveDirection.Up && direction == MoveDirection.Left)
-            || (previousDirection == MoveDirection.Right && direction == MoveDirection.Down))
+        if ((PreviousDirection == MoveDirection.Up && Direction == MoveDirection.Left)
+            || (PreviousDirection == MoveDirection.Right && Direction == MoveDirection.Down))
         {
             sprites.flipX = false;
             sprites.flipY = true;
         }
         // Si va hacia arriba y a la derecha, o hacia la izquierda y abajo
-        else if ((previousDirection == MoveDirection.Up && direction == MoveDirection.Right)
-            || (previousDirection == MoveDirection.Left && direction == MoveDirection.Down))
+        else if ((PreviousDirection == MoveDirection.Up && Direction == MoveDirection.Right)
+            || (PreviousDirection == MoveDirection.Left && Direction == MoveDirection.Down))
         {
             sprites.flipY = true;
             sprites.flipX = true;
         }
         // Si va hacia abajo y a la derecha, o hacia la izquierda y arriba
-        else if ((previousDirection == MoveDirection.Down && direction == MoveDirection.Right)
-            || (previousDirection == MoveDirection.Left && direction == MoveDirection.Up))
+        else if ((PreviousDirection == MoveDirection.Down && Direction == MoveDirection.Right)
+            || (PreviousDirection == MoveDirection.Left && Direction == MoveDirection.Up))
         {
             sprites.flipX = true;
             sprites.flipY = false;
         }
         // Si va hacia abajo y a la izquierda, o hacia la derecha y arriba
-        else if ((previousDirection == MoveDirection.Down && direction == MoveDirection.Left)
-            || (previousDirection == MoveDirection.Right && direction == MoveDirection.Up))
+        else if ((PreviousDirection == MoveDirection.Down && Direction == MoveDirection.Left)
+            || (PreviousDirection == MoveDirection.Right && Direction == MoveDirection.Up))
         {
             sprites.flipX = false;
             sprites.flipY = false;
@@ -156,5 +142,19 @@ public class BodyController : MonoBehaviour
             sprites.sprite = StraightBodySprite;
         sprites.flipX = false;
         sprites.flipY = false;
+    }
+
+    public void HandleDirection()
+    {
+        // Rotar objeto si ha cambiado de direccion
+        if (PreviousDirection != Direction)
+        {
+            ChangeToCornerSprite();
+        }
+        else
+        {
+            RotateByDirection(Direction);
+            ChangeToStraightSprite();
+        }
     }
 }
