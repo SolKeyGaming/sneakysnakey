@@ -50,9 +50,11 @@
      <Compile Include="Assets\Scripts\BodyController.cs" />
      <Compile Include="Assets\Scripts\BodySpriteHolder.cs" />
      <Compile Include="Assets\Scripts\ControllingCameraAspectScript.cs" />
+     <Compile Include="Assets\Scripts\Extensions.cs" />
      <Compile Include="Assets\Scripts\HeadCotroller.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
      <Compile Include="Assets\Scripts\MovementController.cs" />
+     <Compile Include="Assets\Scripts\MovementManager.cs" />
      <Compile Include="Assets\Scripts\TailController.cs" />
      <Compile Include="Assets\Scripts\UiController.cs" />
      <Compile Include="Assets\TouchKit\Helpers\TKRect.cs" />

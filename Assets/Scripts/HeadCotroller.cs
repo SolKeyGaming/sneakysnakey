@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadCotroller : MonoBehaviour
+public class HeadCotroller : MovementManager
 {
 
     BehaviorController _behaviour;
     Rect _playArea;
-
+    
     // Use this for initialization
     void Start()
     {
@@ -24,9 +24,15 @@ public class HeadCotroller : MonoBehaviour
     {
         if (collision.gameObject.tag == "Edible")
         {
-            Vector2 randomPos = new Vector2(Random.Range(_playArea.xMin + 0.5f, _playArea.xMax - 0.5f),
-                Random.Range(_playArea.yMin + 0.5f, _playArea.yMax - 0.5f));
-            var go = Instantiate(collision.gameObject, randomPos, Quaternion.identity);
+
+            float x = Random.Range(_playArea.xMin + 0.5f, _playArea.xMax - 0.5f);
+            float y = Random.Range(_playArea.yMin + 0.5f, _playArea.yMax - 0.5f);
+
+            // Redondeado a factores de 0.64 para posicion estilo grid
+            x -= x % 0.64f;
+            y -= y % 0.64f;
+
+            var go = Instantiate(collision.gameObject, new Vector2(x,y), Quaternion.identity);
 
             Destroy(collision.gameObject);
             _behaviour.AddBody();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,26 +37,28 @@ public class BehaviorController : MonoBehaviour
         Vector2 position = _tail.transform.position;
         Quaternion rotation = _tail.transform.rotation;
 
-        TailController tailController = _tail.GetComponent<TailController>();
+        TailController tailControl = _tail.GetComponent<TailController>();
 
         // TODO: el nuevo cuerpo viene con las direcciones correctas, pro no actualiza su rotacion acorde, sino en el prox MovementController.Move()
 
         // Instanciado del Cuerpo prefabricado donde esta la cola
-        var body = Instantiate(BodyPrefab, position, Quaternion.identity, _bodyGroup.transform);
-
+        var body = BodyPrefab;
+        
         BodyController bodyControl = body.GetComponent<BodyController>();
 
         // Direccion del nuevo cuerpo
-        bodyControl.PreviousDirection = tailController.Direction;
-        bodyControl.Direction = (_bodyGroup.transform.GetChild(
-            _bodyGroup.transform.childCount - 1).GetComponent<BodyController>()).PreviousDirection;
+        bodyControl.PreviousDirection = tailControl.PreviousDirection;
+        bodyControl.Direction = tailControl.Direction;
 
-        //bodyControl.HandleDirection();
+        Instantiate(BodyPrefab, position, Quaternion.identity, _bodyGroup.transform);
+
+        tailControl.Direction = tailControl.PreviousDirection;
+        _tail.transform.rotation = tailControl.Direction.ToQuaternion();
+
 
         // Calculo de la nueva posicion de la cola
-        MoveDirection tailDirection = _movementController.GetDirectionByAngle((int)rotation.eulerAngles.z);
         Vector2 newPosition;
-        switch (tailDirection)
+        switch (_tail.GetComponent<TailController>().Direction)
         {
             case (MoveDirection.Up):
                 newPosition = new Vector2(0, -_spriteCellDimension);

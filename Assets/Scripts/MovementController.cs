@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Extensions;
 
 public class MovementController : MonoBehaviour
 {
@@ -137,11 +138,9 @@ public class MovementController : MonoBehaviour
                 return;
             }
         }
-        // Calculo del vector movimiento de la cabeza
-        Vector2 headMovement = DirectionVector(Step, Direction);
 
-        // Calculo de la nueva posicion de la cabeza
-        Vector2 newHeadPosition = (Vector2)_cabeza.transform.position + headMovement;
+        // Calculo del vector movimiento de la cabeza
+        Vector2 headMovement = Direction.ToVector2(Step);
 
         // Rotar cabeza
         if (PreviousDirection != Direction)
@@ -232,16 +231,16 @@ public class MovementController : MonoBehaviour
         switch (direction)
         {
             case (MoveDirection.Up):
-                resultingVector = new Vector2(0, Step);
+                resultingVector = new Vector2(0, magnitude);
                 break;
             case (MoveDirection.Left):
-                resultingVector = new Vector2(-Step, 0);
+                resultingVector = new Vector2(-magnitude, 0);
                 break;
             case (MoveDirection.Down):
-                resultingVector = new Vector2(0, -Step);
+                resultingVector = new Vector2(0, -magnitude);
                 break;
             case (MoveDirection.Right):
-                resultingVector = new Vector2(Step, 0);
+                resultingVector = new Vector2(magnitude, 0);
                 break;
             default:
                 throw new Exception("Bad direction value");
