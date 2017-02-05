@@ -12,7 +12,7 @@ public class HeadCotroller : MovementManager
     void Start()
     {
         _behaviour = GetComponentInParent<BehaviorController>();
-        _playArea = GetComponentInParent<MovementController>().PlayArea;
+        _playArea = GetComponentInParent<SnakeMovement>().PlayArea;
     }
 
     // Update is called once per frame

@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour {
 
-    MovementController movementControl;
+    SnakeMovement snakeMovement;
     BehaviorController behaviorControl;
 
     // Use this for initialization
     void Start () {
 
-        movementControl = GameObject.Find("Serpiente").GetComponent<MovementController>();
+        snakeMovement = GameObject.Find("Serpiente").GetComponent<SnakeMovement>();
         behaviorControl = GameObject.Find("Serpiente").GetComponent<BehaviorController>();
 
         var swipe = new TKSwipeRecognizer();
         //swipe.boundaryFrame = new TKRect(0, 0, 50f, 50f); // TKRect origin is in bottomleft corner 
         swipe.gestureRecognizedEvent += (s) =>
         {
-            movementControl.SwipeDetected(s);
+            snakeMovement.SwipeDetected(s);
         };
         TouchKit.addGestureRecognizer(swipe);
 

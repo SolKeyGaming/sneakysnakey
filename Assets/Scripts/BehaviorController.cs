@@ -12,8 +12,8 @@ public class BehaviorController : MonoBehaviour
 
     GameObject _bodyGroup;
     GameObject _tail;
-    MovementController _movementController;
-    MoveDirection _direction { get { return _movementController.Direction; } }
+    SnakeMovement _snakeMovement;
+    MoveDirection _direction { get { return _snakeMovement.Direction; } }
     float _spriteCellDimension = 0.64f;
 
     // Use this for initialization
@@ -21,7 +21,7 @@ public class BehaviorController : MonoBehaviour
     {
         _bodyGroup = GameObject.Find("Cuerpos");
         _tail = GameObject.Find("Cola");
-        _movementController = GetComponent<MovementController>();
+        _snakeMovement = GetComponent<SnakeMovement>();
     }
 
     // Update is called once per frame
@@ -55,7 +55,6 @@ public class BehaviorController : MonoBehaviour
         tailControl.Direction = tailControl.PreviousDirection;
         _tail.transform.rotation = tailControl.Direction.ToQuaternion();
 
-
         // Calculo de la nueva posicion de la cola
         Vector2 newPosition;
         switch (_tail.GetComponent<TailController>().Direction)
@@ -79,7 +78,7 @@ public class BehaviorController : MonoBehaviour
         _tail.transform.position += (Vector3)newPosition;
 
         // Creacion del nuevo waypoint en la nueva posicion de la cola
-        _movementController.WayPoints.Insert(0, newPosition);
+        _snakeMovement.WayPoints.Insert(0, newPosition);
 
         // TODO: quisas alterar una variable de puntaje o interna al agregar un espacio
     }

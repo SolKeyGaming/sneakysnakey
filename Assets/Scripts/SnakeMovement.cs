@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Extensions;
 
-public class MovementController : MonoBehaviour
+public class SnakeMovement : MonoBehaviour
 {
     /// <summary>
     /// asd
@@ -111,7 +111,7 @@ public class MovementController : MonoBehaviour
     /// <returns></returns>
     bool CanMove(Transform transform, MoveDirection direction, float magnitude)
     {
-        Vector2 v_direction = DirectionVector(magnitude, direction);
+        Vector2 v_direction = direction.ToVector2(magnitude);
         Vector2 position = (Vector2)transform.position + v_direction;
         if (position.x > PlayArea.xMax || position.x < PlayArea.xMin
             || position.y > PlayArea.yMax || position.y < PlayArea.yMin)
@@ -205,15 +205,64 @@ public class MovementController : MonoBehaviour
             case (TKSwipeDirection.Up):
                 input = "w";
                 break;
+            case (TKSwipeDirection.UpRight):
+                // La diferencia en x es mayor a la diferencia en y: va hacia la derecha
+                if(Math.Abs(recognizer.startPoint.x - recognizer.endPoint.x) > Math.Abs(recognizer.startPoint.y - recognizer.endPoint.y))
+                {
+                    input = "d";
+                }
+                // Va hacia arriba
+                else
+                {
+                    input = "w";
+                }
+                break;
             case (TKSwipeDirection.Right):
                 input = "d";
+                break;
+            case (TKSwipeDirection.DownRight):
+                // La diferencia en x es mayor a la diferencia en y: va hacia la derecha
+                if (Math.Abs(recognizer.startPoint.x - recognizer.endPoint.x) > Math.Abs(recognizer.startPoint.y - recognizer.endPoint.y))
+                {
+                    input = "d";
+                }
+                // Va hacia abajo
+                else
+                {
+                    input = "s";
+                }
                 break;
             case (TKSwipeDirection.Down):
                 input = "s";
                 break;
+            case (TKSwipeDirection.DownLeft):
+                // La diferencia en x es mayor a la diferencia en y: va hacia la izquierda
+                if (Math.Abs(recognizer.startPoint.x - recognizer.endPoint.x) > Math.Abs(recognizer.startPoint.y - recognizer.endPoint.y))
+                {
+                    input = "a";
+                }
+                // Va hacia abajo
+                else
+                {
+                    input = "s";
+                }
+                break;
             case (TKSwipeDirection.Left):
                 input = "a";
                 break;
+            case (TKSwipeDirection.UpLeft):
+                // La diferencia en x es mayor a la diferencia en y: va hacia la izquierda
+                if (Math.Abs(recognizer.startPoint.x - recognizer.endPoint.x) > Math.Abs(recognizer.startPoint.y - recognizer.endPoint.y))
+                {
+                    input = "a";
+                }
+                // Va hacia arriba
+                else
+                {
+                    input = "w";
+                }
+                break;
+
         }
     }
 
