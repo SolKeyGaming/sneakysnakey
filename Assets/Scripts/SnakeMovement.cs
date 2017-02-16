@@ -266,6 +266,28 @@ public class SnakeMovement : MonoBehaviour
         }
     }
 
+    // Recibo de mensaje enviado por SwipeDetectorTest
+    public void SwipeDetected(TKPanRecognizer r)
+    {
+
+        int deltax = (int)r.deltaTranslation.x;
+        int deltay = (int)r.deltaTranslation.y;
+
+        if (Mathf.Abs(deltax) > Mathf.Abs(deltay))
+        {
+            input = deltax > 0 ? "d" : "a";
+        }
+        else if (Mathf.Abs(deltax) < Mathf.Abs(deltay))
+        {
+            input = deltay > 0 ? "w" : "s";
+        }
+        else
+        {
+            //TODO: implementar algo para cuando ocurre que deltax = deltay?
+        }
+
+    }
+
     /// <summary>
     /// Entrega un vector que representa la magnitud y direccion
     /// del desplazamiento de un cuerpo
