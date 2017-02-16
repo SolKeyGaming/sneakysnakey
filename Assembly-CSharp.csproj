@@ -48,16 +48,22 @@
   <ItemGroup>
      <Compile Include="Assets\Edibles.cs" />
      <Compile Include="Assets\Grid.cs" />
-     <Compile Include="Assets\LevelManager.cs" />
      <Compile Include="Assets\Scripts\BehaviorController.cs" />
      <Compile Include="Assets\Scripts\BodyController.cs" />
      <Compile Include="Assets\Scripts\BodySpriteHolder.cs" />
      <Compile Include="Assets\Scripts\ControllingCameraAspectScript.cs" />
+     <Compile Include="Assets\Scripts\Edible.cs" />
+     <Compile Include="Assets\Scripts\EdibleFactory.cs" />
+     <Compile Include="Assets\Scripts\EdibleManager.cs" />
      <Compile Include="Assets\Scripts\Extensions.cs" />
+     <Compile Include="Assets\Scripts\Habilities.cs" />
      <Compile Include="Assets\Scripts\HeadCotroller.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
+     <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\MovementManager.cs" />
+     <Compile Include="Assets\Scripts\PowerUp.cs" />
      <Compile Include="Assets\Scripts\SnakeMovement.cs" />
+     <Compile Include="Assets\Scripts\SwipeDetector.cs" />
      <Compile Include="Assets\Scripts\TailController.cs" />
      <Compile Include="Assets\Scripts\UiController.cs" />
      <Compile Include="Assets\TouchKit\Helpers\TKRect.cs" />

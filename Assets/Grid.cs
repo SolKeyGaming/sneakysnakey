@@ -44,7 +44,7 @@
 // (4) Notice you will now have a peaceful easy feeling and in particular that "It can't be this easy?" feeling.
 // Life is ridiculously simple with game engines! enjoy the paradigm!
 
-
+/*
 using UnityEngine;
 
 static class Grid
@@ -116,3 +116,4 @@ static class Grid
     }
 }
 //////////////////////////////////////////////////////////////////////////////
+*/
