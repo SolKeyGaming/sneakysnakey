@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{350F2AC5-71FF-240D-8888-761BE0EB5E1B}</ProjectGuid>
+    <ProjectGuid>{C194EBF3-7E80-BB9A-F8CC-BD28ADE0BDD9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -46,16 +46,43 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BehaviorController.cs" />
-     <Compile Include="Assets\ControllingCameraAspectScript.cs" />
-     <Compile Include="Assets\MovementControl.cs" />
-     <Compile Include="Assets\MovementController.cs" />
-     <Compile Include="Assets\TouchKitLite\TKLSwipeDetector.cs" />
-     <Compile Include="Assets\TouchKitLite\TKLTouch.cs" />
-     <Compile Include="Assets\TouchKitLite\TouchKitLite.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\Edibles.cs" />
+     <Compile Include="Assets\Grid.cs" />
+     <Compile Include="Assets\Scripts\BehaviorController.cs" />
+     <Compile Include="Assets\Scripts\BodyController.cs" />
+     <Compile Include="Assets\Scripts\BodySpriteHolder.cs" />
+     <Compile Include="Assets\Scripts\ControllingCameraAspectScript.cs" />
+     <Compile Include="Assets\Scripts\Edible.cs" />
+     <Compile Include="Assets\Scripts\EdibleFactory.cs" />
+     <Compile Include="Assets\Scripts\EdibleManager.cs" />
+     <Compile Include="Assets\Scripts\Extensions.cs" />
+     <Compile Include="Assets\Scripts\Habilities.cs" />
+     <Compile Include="Assets\Scripts\HeadCotroller.cs" />
+     <Compile Include="Assets\Scripts\InputController.cs" />
+     <Compile Include="Assets\Scripts\LevelManager.cs" />
+     <Compile Include="Assets\Scripts\MovementManager.cs" />
+     <Compile Include="Assets\Scripts\PowerUp.cs" />
+     <Compile Include="Assets\Scripts\SnakeMovement.cs" />
+     <Compile Include="Assets\Scripts\SwipeDetector.cs" />
+     <Compile Include="Assets\Scripts\TailController.cs" />
+     <Compile Include="Assets\Scripts\UiController.cs" />
+     <Compile Include="Assets\TouchKit\Helpers\TKRect.cs" />
+     <Compile Include="Assets\TouchKit\Helpers\TKTouch.cs" />
+     <Compile Include="Assets\TouchKit\Helpers\TouchKitEditorSupport.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKAbstractGestureRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKAngleSwipeRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKAnyTouchRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKButtonRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKCurveRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKLongPressRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKOneFingerRotationRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKPanRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKPinchRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKRotationRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKSwipeRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKTapRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\Recognizers\TKTouchPadRecognizer.cs" />
+     <Compile Include="Assets\TouchKit\TouchKit.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -70,9 +97,6 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>D:/Programas/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
